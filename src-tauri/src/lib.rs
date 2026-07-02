@@ -47,6 +47,17 @@ static STATE: Mutex<SharedState> = Mutex::new(SharedState {
 static APP_HANDLE: Mutex<Option<AppHandle>> = Mutex::new(None);
 static mut ORIGINAL_WNDPROC: WNDPROC = None;
 
+fn debug_log(msg: &str) {
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("C:\\Users\\Jeffery\\.gemini\\antigravity\\scratch\\debug.log")
+    {
+        use std::io::Write;
+        let _ = writeln!(file, "{}", msg);
+    }
+}
+
 // Custom WndProc Subclass Callback to process clipboard and global hotkeys natively
 unsafe extern "system" fn subclass_wndproc(
     hwnd: HWND,
@@ -57,12 +68,15 @@ unsafe extern "system" fn subclass_wndproc(
     match msg {
         WM_CLIPBOARDUPDATE => {
             let mut state = STATE.lock().unwrap();
+            debug_log(&format!("WM_CLIPBOARDUPDATE received: is_active={}, is_paused={}", state.is_active, state.is_paused));
             if state.is_active && !state.is_paused {
                 let fore_hwnd = GetForegroundWindow();
                 let root_hwnd = GetAncestor(fore_hwnd, GA_ROOT);
+                debug_log(&format!("  fore_hwnd={}, root_hwnd={}", fore_hwnd, root_hwnd));
                 
                 let is_from_a = Some(root_hwnd) == state.hwnd_a;
                 let is_from_b = Some(root_hwnd) == state.hwnd_b;
+                debug_log(&format!("  is_from_a={}, is_from_b={}, hwnd_a={:?}, hwnd_b={:?}", is_from_a, is_from_b, state.hwnd_a, state.hwnd_b));
                 
                 if is_from_a || is_from_b {
                     let source = root_hwnd;
@@ -82,6 +96,7 @@ unsafe extern "system" fn subclass_wndproc(
         }
         WM_HOTKEY => {
             let hotkey_id = wparam as i32;
+            debug_log(&format!("WM_HOTKEY received: id={}", hotkey_id));
             if hotkey_id == 101 {
                 let mut state = STATE.lock().unwrap();
                 if state.is_active && !state.is_paused {
@@ -110,6 +125,7 @@ unsafe extern "system" fn subclass_wndproc(
         }
         WM_CUSTOM_UNPAUSE => {
             let mut state = STATE.lock().unwrap();
+            debug_log("WM_CUSTOM_UNPAUSE received - unpausing clipboard");
             state.is_paused = false;
             0
         }
@@ -192,6 +208,7 @@ unsafe extern "system" fn subclass_wndproc(
 
 // Background thread executor for focus switching and paste emulation
 fn execute_paste(source: HWND, target: HWND, prepend_newline: bool, main_hwnd: HWND) {
+    debug_log(&format!("execute_paste started: prepend_newline={}", prepend_newline));
     let mut original_text = String::new();
     let mut modified = false;
     
@@ -202,6 +219,9 @@ fn execute_paste(source: HWND, target: HWND, prepend_newline: bool, main_hwnd: H
     
     if let Some(text) = win32::read_clipboard_text() {
         original_text = text;
+        debug_log(&format!("  read clipboard text: len={}", original_text.len()));
+    } else {
+        debug_log("  failed to read clipboard text");
     }
     
     if prepend_newline && !original_text.is_empty() {
@@ -214,8 +234,12 @@ fn execute_paste(source: HWND, target: HWND, prepend_newline: bool, main_hwnd: H
     // Switch focus to target window
     win32::force_foreground(target);
     thread::sleep(Duration::from_millis(45)); // 45ms focus transition
+    unsafe {
+        debug_log(&format!("  foreground window after focus switch: actual={}, expected={}", GetForegroundWindow(), target));
+    }
     
     // Send Paste
+    debug_log("  sending paste keys");
     win32::send_paste();
     thread::sleep(Duration::from_millis(35)); // 35ms paste complete
     
@@ -226,7 +250,12 @@ fn execute_paste(source: HWND, target: HWND, prepend_newline: bool, main_hwnd: H
     
     // Switch focus back to source window
     win32::force_foreground(source);
+    thread::sleep(Duration::from_millis(45)); // 45ms focus transition
+    unsafe {
+        debug_log(&format!("  foreground window after focus back: actual={}, expected={}", GetForegroundWindow(), source));
+    }
     
+    debug_log("execute_paste finished, posting unpause");
     // Post message back to main window thread to unpause.
     // Windows guarantees that queued WM_CLIPBOARDUPDATE messages are processed
     // before this custom message since they were posted earlier.
