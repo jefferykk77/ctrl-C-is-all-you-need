@@ -1,19 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
-  /* Cohere Dark Brand Palette */
-  --bg-color: rgba(14, 14, 13, 0.78);
-  --border-color: rgba(235, 232, 226, 0.06);
-  --card-bg: rgba(24, 24, 22, 0.82);
-  --card-bg-hover: rgba(32, 32, 30, 0.88);
-  --text-primary: #ebe8e2;
-  --text-secondary: #a19e98;
-  --text-muted: #6e6c67;
+  /* Claude Classic White/Cream Palette */
+  --bg-color: #faf9f5;
+  --border-color: #e6dfd8;
+  --card-bg: #efe9de;
+  --card-bg-hover: #e8e0d2;
+  --text-primary: #141413;
+  --text-secondary: #3d3d3a;
+  --text-muted: #6c6a64;
   
-  /* Cohere Accents */
-  --accent-peach: #e9b09c;     /* Cohere Coral/Peach */
-  --accent-sage: #4ca684;      /* Cohere Sage Green */
-  --border-glass: rgba(235, 232, 226, 0.08);
+  /* Claude Accents */
+  --accent-coral: #cc785c;      /* Anthropic Coral/Terracotta */
+  --accent-sage: #3c8252;       /* Anthropic Sage Green */
+  --border-glass: #e6dfd8;
+  --error: #c64545;
 }
 
 * {
@@ -29,7 +30,7 @@ html, body {
   height: 285px;
   overflow: hidden;
   background: transparent !important;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-primary);
   letter-spacing: -0.1px;
 }
@@ -38,61 +39,50 @@ html, body {
   width: 285px;
   height: 285px;
   background: var(--bg-color);
-  backdrop-filter: blur(24px) saturate(130%);
   border: 1px solid var(--border-glass);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(235, 232, 226, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(20, 20, 19, 0.08), 0 1px 3px rgba(20, 20, 19, 0.02);
   display: flex;
   flex-direction: column;
 }
 
 /* Header bar */
 .window-header {
-  height: 36px;
+  height: 32px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Align controls to the top right */
   align-items: center;
-  padding: 0 14px;
-  border-bottom: 1px solid rgba(235, 232, 226, 0.03);
+  padding: 0 8px;
   cursor: move;
-}
-
-.window-title {
-  font-family: 'Lora', serif;
-  font-style: italic;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  letter-spacing: 0.2px;
 }
 
 .window-controls {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 
 .control-btn {
   background: transparent;
   border: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  color: var(--text-secondary);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s ease;
 }
 
 .control-btn:hover {
-  background: rgba(235, 232, 226, 0.06);
+  background: #ebe6df;
   color: var(--text-primary);
 }
 
 .close-btn:hover {
-  background: rgba(233, 176, 156, 0.15);
-  color: var(--accent-peach);
+  background: #fce8e6;
+  color: var(--error);
 }
 
 /* Main Content */
@@ -100,14 +90,14 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 10px 14px 10px 14px;
+  padding: 4px 14px 12px 14px;
   gap: 10px;
 }
 
 /* Target Crosshair Area */
 .crosshair-area {
   flex: 1;
-  background: var(--card-bg);
+  background: #f5f0e8; /* Claude surface-soft */
   border: 1px solid var(--border-color);
   border-radius: 8px;
   display: flex;
@@ -115,25 +105,25 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: grab;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 6px 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 4px 0;
 }
 
 .crosshair-area:hover {
-  background: var(--card-bg-hover);
-  border-color: rgba(235, 232, 226, 0.12);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  background: #e8e0d2; /* Claude surface-cream-strong */
+  border-color: #d1c8bd;
+  box-shadow: 0 4px 15px rgba(20, 20, 19, 0.04);
 }
 
 .crosshair-area:active {
   cursor: grabbing;
   transform: scale(0.98);
-  border-color: var(--accent-peach);
+  border-color: var(--accent-coral);
 }
 
 .crosshair-wrapper {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,13 +132,12 @@ html, body {
 .crosshair-svg {
   width: 100%;
   height: 100%;
-  color: var(--text-secondary);
-  transition: all 0.25s ease;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
 }
 
 .crosshair-area:hover .crosshair-svg {
-  color: var(--accent-peach);
-  filter: drop-shadow(0 0 6px rgba(233, 176, 156, 0.25));
+  color: var(--accent-coral);
 }
 
 /* SVG shapes styling */
@@ -169,26 +158,25 @@ html, body {
   stroke: currentColor;
   stroke-width: 0.8;
   fill: none;
-  opacity: 0.3;
+  opacity: 0.25;
 }
 
 .crosshair-line {
   stroke: currentColor;
   stroke-width: 0.6;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .target-dot {
-  fill: var(--accent-peach);
-  filter: drop-shadow(0 0 2px var(--accent-peach));
+  fill: var(--accent-coral);
 }
 
 .drag-hint {
   font-family: 'Lora', serif;
   font-style: italic;
   font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 4px;
+  color: var(--text-muted);
+  margin-top: 2px;
   transition: color 0.2s ease;
 }
 
@@ -205,7 +193,7 @@ html, body {
 
 .slot-card {
   height: 54px;
-  background: var(--card-bg);
+  background: #fdfdfb;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 6px 8px;
@@ -216,20 +204,20 @@ html, body {
 }
 
 .slot-card:hover {
-  background: var(--card-bg-hover);
-  border-color: rgba(235, 232, 226, 0.08);
+  background: #f5f0e8;
+  border-color: #d1c8bd;
 }
 
 .slot-card.active-bound {
-  box-shadow: inset 0 0 8px rgba(235, 232, 226, 0.02);
+  background: #efe9de; /* Claude card surface */
 }
 
 #slot-a.active-bound {
-  border-color: rgba(76, 166, 132, 0.3);
+  border-color: rgba(60, 130, 82, 0.4);
 }
 
 #slot-b.active-bound {
-  border-color: rgba(233, 176, 156, 0.3);
+  border-color: rgba(204, 120, 92, 0.4);
 }
 
 .slot-header {
@@ -249,19 +237,19 @@ html, body {
 }
 
 .badge-a {
-  background: rgba(76, 166, 132, 0.1);
+  background: rgba(93, 184, 114, 0.1);
   color: var(--accent-sage);
 }
 
 .badge-b {
-  background: rgba(233, 176, 156, 0.1);
-  color: var(--accent-peach);
+  background: rgba(204, 120, 92, 0.1);
+  color: var(--accent-coral);
 }
 
 .clear-slot-btn {
   background: transparent;
   border: none;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 8px;
   cursor: pointer;
   padding: 2px;
@@ -275,7 +263,7 @@ html, body {
 
 .clear-slot-btn:hover {
   opacity: 1 !important;
-  color: var(--accent-peach);
+  color: var(--error);
 }
 
 .slot-title {
@@ -290,6 +278,8 @@ html, body {
 .slot-card.empty .slot-title {
   color: var(--text-muted);
   font-weight: 400;
+  font-family: 'Lora', serif;
+  font-style: italic;
 }
 
 /* Status Bar */
@@ -298,7 +288,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid rgba(235, 232, 226, 0.02);
+  border-top: 1px solid var(--border-color);
   padding-top: 6px;
 }
 
@@ -310,22 +300,21 @@ html, body {
   border-radius: 12px;
   font-family: 'Space Mono', monospace;
   font-size: 9px;
-  font-weight: 400;
-  transition: all 0.25s ease;
+  font-weight: 500;
+  transition: all 0.2s ease;
   letter-spacing: 0.1px;
 }
 
 .status-indicator.inactive {
-  background: rgba(235, 232, 226, 0.02);
-  color: var(--text-secondary);
-  border: 1px solid rgba(235, 232, 226, 0.03);
+  background: #f5f0e8;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
 }
 
 .status-indicator.active {
-  background: rgba(76, 166, 132, 0.05);
+  background: rgba(93, 184, 114, 0.1);
   color: var(--accent-sage);
-  border: 1px solid rgba(76, 166, 132, 0.2);
-  box-shadow: 0 0 10px rgba(76, 166, 132, 0.03);
+  border: 1px solid rgba(93, 184, 114, 0.3);
 }
 
 .status-dot {

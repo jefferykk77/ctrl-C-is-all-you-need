@@ -82,7 +82,7 @@ async function refreshSlots() {
   } else {
     cardA.classList.add("empty");
     cardA.classList.remove("active-bound");
-    cardA.querySelector(".slot-title").textContent = "Empty (Drag to bind)";
+    cardA.querySelector(".slot-title").textContent = "App to bind";
   }
 
   // Render Slot B
@@ -93,7 +93,7 @@ async function refreshSlots() {
   } else {
     cardB.classList.add("empty");
     cardB.classList.remove("active-bound");
-    cardB.querySelector(".slot-title").textContent = "Empty (Drag to bind)";
+    cardB.querySelector(".slot-title").textContent = "App to bind";
   }
 
   // Render locked status channel
