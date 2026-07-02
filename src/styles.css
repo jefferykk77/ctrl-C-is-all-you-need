@@ -201,6 +201,7 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 0; /* Prevent grid item overflow from long nowrap text */
 }
 
 .slot-card:hover {

@@ -100,12 +100,12 @@ async function refreshSlots() {
   if (slotA.hwnd && slotB.hwnd) {
     statusIndicator.classList.remove("inactive");
     statusIndicator.classList.add("active");
-    statusText.textContent = "Locked CV Channel Active";
+    statusText.textContent = "Active";
     await invoke("set_active", { active: true });
   } else {
     statusIndicator.classList.add("inactive");
     statusIndicator.classList.remove("active");
-    statusText.textContent = "Bypass Mode";
+    statusText.textContent = "Waiting";
     await invoke("set_active", { active: false });
   }
 }
