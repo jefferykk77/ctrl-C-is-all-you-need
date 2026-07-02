@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BridgeCopy</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="/main.js" defer></script>
+</head>
+<body>
+  <div class="app-window">
+    <!-- Header with window controls -->
+    <header class="window-header">
+      <span class="window-title">BridgeCopy</span>
+      <div class="window-controls">
+        <button id="btn-minimize" class="control-btn" title="Minimize">
+          <svg viewBox="0 0 10 1" width="10" height="1">
+            <line x1="0" y1="0.5" x2="10" y2="0.5" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+        </button>
+        <button id="btn-close" class="control-btn close-btn" title="Close">
+          <svg viewBox="0 0 10 10" width="10" height="10">
+            <path d="M 1,1 L 9,9 M 9,1 L 1,9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Target crosshair container -->
+      <div id="drag-anchor" class="crosshair-area" title="Drag and drop onto a target window to bind">
+        <div class="crosshair-wrapper">
+          <svg class="crosshair-svg" viewBox="0 0 100 100">
+            <!-- Outer dashed circle -->
+            <circle cx="50" cy="50" r="40" class="ring-outer" />
+            <!-- Inner solid circle -->
+            <circle cx="50" cy="50" r="28" class="ring-inner" />
+            <!-- Vertical crosshair line -->
+            <line x1="50" y1="12" x2="50" y2="88" class="crosshair-line" />
+            <!-- Horizontal crosshair line -->
+            <line x1="12" y1="50" x2="88" y2="50" class="crosshair-line" />
+            <!-- Center target dot -->
+            <circle cx="50" cy="50" r="3.5" class="target-dot" />
+          </svg>
+        </div>
+        <span class="drag-hint">Drag Target to Bind</span>
+      </div>
+
+      <!-- Slots status -->
+      <div class="slots-container">
+        <div id="slot-a" class="slot-card empty">
+          <div class="slot-header">
+            <span class="slot-badge badge-a">APP 1</span>
+            <button class="clear-slot-btn" data-slot="A" title="Clear Slot">✕</button>
+          </div>
+          <span class="slot-title">To bind</span>
+        </div>
+        
+        <div id="slot-b" class="slot-card empty">
+          <div class="slot-header">
+            <span class="slot-badge badge-b">APP 2</span>
+            <button class="clear-slot-btn" data-slot="B" title="Clear Slot">✕</button>
+          </div>
+          <span class="slot-title">To bind</span>
+        </div>
+      </div>
+
+      <!-- Status Bar -->
+      <footer class="status-footer">
+        <div id="status-indicator" class="status-indicator inactive">
+          <span class="status-dot"></span>
+          <span id="status-text" class="status-text">Waiting</span>
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
