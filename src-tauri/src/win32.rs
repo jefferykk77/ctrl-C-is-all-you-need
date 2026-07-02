@@ -124,6 +124,10 @@ pub fn force_foreground(hwnd: HWND) {
             ShowWindow(hwnd, SW_RESTORE);
         }
         
+        // Bypass Windows ASST focus stealing protection by simulating an Alt keypress
+        keybd_event(0x12, 0, 0, 0); // VK_MENU (Alt) Down
+        keybd_event(0x12, 0, KEYEVENTF_KEYUP, 0); // VK_MENU (Alt) Up
+        
         let fore_hwnd = GetForegroundWindow();
         let fore_thread = GetWindowThreadProcessId(fore_hwnd, std::ptr::null_mut());
         let target_thread = GetWindowThreadProcessId(hwnd, std::ptr::null_mut());
